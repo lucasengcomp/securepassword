@@ -25,6 +25,8 @@ class PasswordServiceTest {
     private String withLowercasePassword;
     private String noNumberPassword;
     private String withNumberPassword;
+    private String noSpecialCharPassword;
+    private String withSpecialCharPassword;
     private List<String> failures;
 
     @BeforeEach
@@ -38,6 +40,8 @@ class PasswordServiceTest {
         withLowercasePassword = "QueenTheBest123@";
         noNumberPassword = "QueenTheBest@";
         withNumberPassword = "QueenTheBest123@";
+        noSpecialCharPassword = "QueenTheBest123";
+        withSpecialCharPassword = "QueenTheBest123@";
         passwordService = new PasswordService();
     }
 
@@ -112,5 +116,23 @@ class PasswordServiceTest {
 
         assertFalse(failures.contains(Messages.PASSWORD_NUMBER),
                 "A senha não deve gerar uma mensagem de erro por falta de números.");
+    }
+
+    @Test
+    @DisplayName("Validate that a password without special characters generates an error message")
+    void testValidateSpecialCharsForNoSpecialCharPassword() {
+        failures = passwordService.validatePass(noSpecialCharPassword);
+
+        assertTrue(failures.contains(Messages.PASSWORD_SPECIAL_CHAR),
+                "A senha deve possuir pelo menos um caractere especial.");
+    }
+
+    @Test
+    @DisplayName("Validate that a password with special characters does not generate an error message")
+    void testValidateSpecialCharsForWithSpecialCharPassword() {
+        failures = passwordService.validatePass(withSpecialCharPassword);
+
+        assertFalse(failures.contains(Messages.PASSWORD_SPECIAL_CHAR),
+                "A senha não deve gerar uma mensagem de erro por falta de caracteres especiais.");
     }
 }
