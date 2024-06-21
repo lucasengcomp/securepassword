@@ -23,6 +23,8 @@ class PasswordServiceTest {
     private String withUppercasePassword;
     private String noLowercasePassword;
     private String withLowercasePassword;
+    private String noNumberPassword;
+    private String withNumberPassword;
     private List<String> failures;
 
     @BeforeEach
@@ -34,6 +36,8 @@ class PasswordServiceTest {
         withUppercasePassword = "QueenTheBest123";
         noLowercasePassword = "QUEENTHEBEST123@";
         withLowercasePassword = "QueenTheBest123@";
+        noNumberPassword = "QueenTheBest@";
+        withNumberPassword = "QueenTheBest123@";
         passwordService = new PasswordService();
     }
 
@@ -78,7 +82,6 @@ class PasswordServiceTest {
     @Test
     @DisplayName("Validate that a password without lowercase letters generates an error message")
     void testValidateLowercaseForNoLowercasePassword() {
-        String noLowercasePassword = "QUEENTHEBEST123@";
         failures = passwordService.validatePass(noLowercasePassword);
 
         assertTrue(failures.contains(Messages.PASSWORD_LOWERCASE), "A senha deve possuir pelo menos uma letra minúscula.");
@@ -87,10 +90,27 @@ class PasswordServiceTest {
     @Test
     @DisplayName("Validate that a password with lowercase letters does not generate an error message")
     void testValidateLowercaseForWithLowercasePassword() {
-        String withLowercasePassword = "QueenTheBest123@";
         failures = passwordService.validatePass(withLowercasePassword);
 
         assertFalse(failures.contains(Messages.PASSWORD_LOWERCASE),
                 "A senha não deve gerar uma mensagem de erro por falta de letras minúsculas.");
+    }
+
+    @Test
+    @DisplayName("Validate that a password without numbers generates an error message")
+    void testValidateNumberForNoNumberPassword() {
+        failures = passwordService.validatePass(noNumberPassword);
+
+        assertTrue(failures.contains(Messages.PASSWORD_NUMBER),
+                "A senha deve possuir pelo menos um número.");
+    }
+
+    @Test
+    @DisplayName("Validate that a password with numbers does not generate an error message")
+    void testValidateNumberForWithNumberPassword() {
+        failures = passwordService.validatePass(withNumberPassword);
+
+        assertFalse(failures.contains(Messages.PASSWORD_NUMBER),
+                "A senha não deve gerar uma mensagem de erro por falta de números.");
     }
 }
