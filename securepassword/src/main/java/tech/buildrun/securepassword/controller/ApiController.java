@@ -20,7 +20,7 @@ public class ApiController {
         var failures = service.validatePass(request.password());
 
         if (failures.isEmpty()) {
-            return ResponseEntity.ok().build();
+            return ResponseEntity.noContent().build();
         }
 
         return ResponseEntity.badRequest().body(new FailureResponse(failures));
