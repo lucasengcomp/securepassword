@@ -74,4 +74,23 @@ class PasswordServiceTest {
         assertFalse(failures.contains(Messages.PASSWORD_UPPERCASE),
                 "A senha não deve gerar uma mensagem de erro por falta de letras maiúsculas.");
     }
+
+    @Test
+    @DisplayName("Validate that a password without lowercase letters generates an error message")
+    void testValidateLowercaseForNoLowercasePassword() {
+        String noLowercasePassword = "QUEENTHEBEST123@";
+        failures = passwordService.validatePass(noLowercasePassword);
+
+        assertTrue(failures.contains(Messages.PASSWORD_LOWERCASE), "A senha deve possuir pelo menos uma letra minúscula.");
+    }
+
+    @Test
+    @DisplayName("Validate that a password with lowercase letters does not generate an error message")
+    void testValidateLowercaseForWithLowercasePassword() {
+        String withLowercasePassword = "QueenTheBest123@";
+        failures = passwordService.validatePass(withLowercasePassword);
+
+        assertFalse(failures.contains(Messages.PASSWORD_LOWERCASE),
+                "A senha não deve gerar uma mensagem de erro por falta de letras minúsculas.");
+    }
 }
